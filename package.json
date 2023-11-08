@@ -1,0 +1,21 @@
+{
+	"name": "drage",
+	"version": "0.0.0",
+	"description": "Draggable Container",
+	"main": "Drage.js",
+	"types": "Drage.d.ts",
+	"type": "module",
+	"scripts": {
+		"types": "tsc Drage.js --declaration --allowJs --emitDeclarationOnly --outFile Drage.d.ts"
+	},
+	"keywords": [
+		"draggable",
+		"container"
+	],
+	"author": "Zaron Chen",
+	"license": "MIT",
+	"devDependencies": {
+		"p5": "^1.8.0",
+		"tweakpane": "^4.0.1"
+	}
+}
