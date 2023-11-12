@@ -7,7 +7,8 @@ export function Drage({
 	hor,
 	padding,
 	roundCorner,
-	color,
+	containerColor,
+	dragAreaColor,
 }?: {
 	width?: string
 	height?: string
@@ -17,7 +18,8 @@ export function Drage({
 	hor?: string
 	padding?: string
 	roundCorner?: string
-	color?: string
+	containerColor?: string
+	dragAreaColor?: string
 }): {
 	onDrage: () => boolean
 	contentArea: HTMLDivElement
