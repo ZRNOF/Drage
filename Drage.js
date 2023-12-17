@@ -1,3 +1,12 @@
+/*!
+ * Drage
+ * Version: 1.0.1
+ * Author: Zaron Chen
+ * License: MIT
+ *
+ * Copyright (c) 2023 Zaron Chen
+ */
+
 export const Drage = ({
 	width = "300px",
 	height = "25px",
@@ -12,12 +21,21 @@ export const Drage = ({
 	//edgePadding = 16,
 	//within = false,
 } = {}) => {
-	let MOUSEOVER = false
+	// get device type: "touch" | "mouse"
+	let DEVICE_TYPE
+	try {
+		document.createEvent("TouchEvent")
+		DEVICE_TYPE = "touch"
+	} catch (e) {
+		DEVICE_TYPE = "mouse"
+	}
+
+	let MOUSE_OVER = false
 	let DRAGGING = false
-	const onMouseOver = () => (MOUSEOVER = true)
-	const onMouseOut = () => (MOUSEOVER = false)
+	const onMouseOver = () => (MOUSE_OVER = true)
+	const onMouseOut = () => (MOUSE_OVER = false)
 	// allows users to check if the mouse is over the Drage
-	const onDrage = () => MOUSEOVER
+	const onDrage = () => MOUSE_OVER
 
 	const html = document.documentElement
 	const body = document.body
@@ -27,10 +45,6 @@ export const Drage = ({
 
 	// create container, Drage
 	const container = document.createElement("div")
-	container.onmouseover = () => onMouseOver()
-	container.onmouseout = () => onMouseOut()
-	container.ontouchstart = () => onMouseOver()
-	container.ontouchend = () => onDragEnd()
 	container.style.cssText = `
 		background-color: ${containerColor};
 		width: ${width};
@@ -83,9 +97,9 @@ export const Drage = ({
 		const { clientX, clientY } = e.type === "mousedown" ? e : e.touches[0]
 		offsetX = clientX - container.getBoundingClientRect()[hor]
 		offsetY = clientY - container.getBoundingClientRect()[ver]
-		container.style.transition = "none"
 		dragArea.style.cursor = "grabbing"
 		body.style.cursor = "grabbing"
+		container.style.transition = "none"
 	}
 
 	// mousemove | touchmove
@@ -103,13 +117,11 @@ export const Drage = ({
 
 	// mouseup | mouseleave | touchend
 	const onDragEnd = () => {
-		if (DRAGGING) {
-			DRAGGING = false
-			onMouseOut()
-			dragArea.style.cursor = "grab"
-			body.style.cursor = ""
-			container.style.transition = "transform 0.3s ease"
-		}
+		if (!DRAGGING) return
+		DRAGGING = false
+		dragArea.style.cursor = "grab"
+		body.style.cursor = ""
+		container.style.transition = "transform 0.3s ease"
 	}
 
 	/* // let position stay within the screen
@@ -132,14 +144,29 @@ export const Drage = ({
 		container.style.transition = "transform 0.12s ease"
 	} */
 
-	// event listeners
+	// dragArea event listeners
 	dragArea.addEventListener("mousedown", onDragStart)
+	dragArea.addEventListener("touchstart", onDragStart)
+
+	// document event listeners
 	document.addEventListener("mousemove", onDragMove)
 	document.addEventListener("mouseup", onDragEnd)
 	document.addEventListener("mouseleave", onDragEnd)
-	dragArea.addEventListener("touchstart", onDragStart)
 	document.addEventListener("touchmove", onDragMove)
 	document.addEventListener("touchend", onDragEnd)
+
+	// container event listeners
+	container.addEventListener("mouseover", onMouseOver)
+	container.addEventListener("mouseout", onMouseOut)
+	container.addEventListener("touchstart", onMouseOver)
+	container.addEventListener("touchend", () => {
+		onMouseOut()
+		onDragEnd()
+	})
+	container.addEventListener("click", () => {
+		DEVICE_TYPE === "touch" && onMouseOut()
+		onDragEnd()
+	})
 
 	//if (within) window.addEventListener("resize", onResize)
 

@@ -1,12 +1,14 @@
 {
 	"name": "drage",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Draggable Container",
 	"main": "Drage.js",
 	"types": "Drage.d.ts",
 	"type": "module",
 	"scripts": {
-		"types": "tsc Drage.js --declaration --allowJs --emitDeclarationOnly --outFile Drage.d.ts"
+		"types": "tsc Drage.js --declaration --allowJs --emitDeclarationOnly --outFile Drage.d.ts",
+		"minify": "npm run minjs",
+		"minjs": "terser -c -m --module -o Drage.min.js Drage.js"
 	},
 	"keywords": [
 		"draggable",
