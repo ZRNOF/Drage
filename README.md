@@ -1,5 +1,7 @@
 # Drage
 
+[![NPM Package][npm]][npm-url]
+
 Draggable Container.
 
 ## Installation
@@ -33,3 +35,7 @@ const pane = new Pane({
 ## LICENSE
 
 Please refer to [the MIT license](https://github.com/ZRNOF/Drage/blob/main/LICENSE) for detailed licensing information.
+
+
+[npm]: https://img.shields.io/npm/v/drage
+[npm-url]: https://www.npmjs.com/package/drage
